@@ -5,7 +5,7 @@
 [![image](https://img.shields.io/conda/vn/conda-forge/basal_and_bark.svg)](https://anaconda.org/conda-forge/basal_and_bark)
 
 
-**Welcome to Basal and Bark, a spatial python package for working with forest data.**
+**Welcome to Basal and Bark, a spatial python package for working with forest data!**
 
 
 -   Free software: MIT license
