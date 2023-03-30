@@ -24,19 +24,19 @@ def generate_lucky_number(length=1):
     result_str = ''.join(random.choice(numbers) for i in range(length))
     return result_str
 
-def add_search_control():
-    marker = Marker(icon=AwesomeIcon(name="check", marker_color='green', icon_color='darkgreen'))
+# def add_search_control():
+#     marker = Marker(icon=AwesomeIcon(name="check", marker_color='green', icon_color='darkgreen'))
 
-    this.add_control(SearchControl(
-    position="topleft",
-    url='https://nominatim.openstreetmap.org/search?format=json&q={s}',
-    zoom=5,
-    marker=marker
-    ))
+#     this.add_control(SearchControl(
+#     position="topleft",
+#     url='https://nominatim.openstreetmap.org/search?format=json&q={s}',
+#     zoom=5,
+#     marker=marker
+#     ))
 
 
 class Map(ipyleaflet.Map):
     def __init__(self, center, zoom, **kwargs):
-        if("scroll_wheel_zoom" not in **kwargs):
+        if "scroll_wheel_zoom" not in kwargs:
             kwargs["scroll+wheel_zoom"]=True
         super().__init__(center = center, zoom = zoom, **kwargs)
