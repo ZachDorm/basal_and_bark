@@ -47,7 +47,7 @@ nav:
     - Contributing: contributing.md
     - FAQ: faq.md
     - Examples: 
-            - intr.ipynb
+            - examples/intr.ipynb
     - Examples 2: folium.ipynb
     - Changelog: changelog.md
     - Report Issues: https://github.com/ZachDorm/basal_and_bark/issues
