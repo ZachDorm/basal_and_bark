@@ -18,9 +18,10 @@ def generate_random_string(length):
     Returns:
         string: string of random characters of specified length
     """    
-    letters = string.ascii_lowercase
-    result_str = ''.join(random.choice(letters) for i in range(length))
-    return result_str
+    # letters = string.ascii_lowercase
+    # result_str = ''.join(random.choice(letters) for i in range(length))
+    # return result_str
+    return "test"
 
 
 def generate_lucky_number(length=1):
@@ -162,6 +163,22 @@ class Map(ipyleaflet.Map):
 
         except:
             return None
+        
+    def add_tile_layer(self, url, name, attribution="", **kwargs):
+        """Adds a tile layer to the map.
+        Args:
+            url (str): The URL of the tile layer.
+            name (str): The name of the tile layer.
+            attribution (str, optional): The attribution of the tile layer. Defaults to "".
+        """
+        tile_layer = ipyleaflet.TileLayer(
+            url=url,
+            name=name,
+            attribution=attribution,
+            **kwargs
+        )
+        self.add_layer(tile_layer)
+
 
 
 
@@ -223,24 +240,25 @@ class Map_Folium(folium.Map):
     Returns:
         basal_and_bark map: basal_and_bark map with provided data added to it
     """  
-    m = map  
-    try:
-        #m = Map(center = [40,-100], zoom = 4, test = "test", scroll_wheel_zoom = True)
-        f = geopandas.read_file(data)
+        m = map 
+        data=data 
+        try:
+            #m = Map(center = [40,-100], zoom = 4, test = "test", scroll_wheel_zoom = True)
+            f = geopandas.read_file(data)
         
-        for _, r in f.iterrows():
-    # Without simplifying the representation of each borough,
-    # the map might not be displayed
-            sim_geo = geopandas.GeoSeries(r['geometry']).simplify(tolerance=0.001)
+            for _, r in f.iterrows():
+        # Without simplifying the representation of each borough,
+        # the map might not be displayed
+             sim_geo = geopandas.GeoSeries(r['geometry']).simplify(tolerance=0.001)
             geo_j = sim_geo.to_json()
             geo_j = folium.GeoJson(data=geo_j)
             geo_j.add_to(map)
         # geo = GeoData(geo_dataframe=f, name="TN Counties")
         # m = map.add_layer(geo)
-        m
+            m
     
-    except:
-        return None
+        except:
+            None
 
 
 
