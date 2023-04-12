@@ -2,7 +2,7 @@
 
 __author__ = """Zach Dorminey"""
 __email__ = 'zach.dorminey@gmail.com'
-__version__ = '0.0.2'
+__version__ = '0.0.3'
 
 
 from .basal_and_bark import *
