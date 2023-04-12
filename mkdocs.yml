@@ -48,7 +48,8 @@ nav:
     - FAQ: faq.md
     - Examples: 
             - examples/geosdemo.ipynb
-    - Examples 2: folium.ipynb
+    - Examples 2: 
+            - examples/Lab 7.ipynb
     - Changelog: changelog.md
     - Report Issues: https://github.com/ZachDorm/basal_and_bark/issues
     - API Reference:
