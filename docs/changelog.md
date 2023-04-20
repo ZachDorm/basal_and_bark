@@ -2,6 +2,16 @@
 
 
 
+## v0.0.4 - April 20, 2023
+
+**Improvement**:
+
+-   Added methods for adding raster data and a static image to map.
+
+**New Features**:
+
+-   add_raster(url)
+-   add_image(url)
 ## v0.0.3 - April 12, 2023
 
 **Improvement**:

@@ -49,6 +49,7 @@ nav:
     - Examples: 
             - examples/geosdemo.ipynb
             - examples/Lab 7.ipynb
+            - examples/rasters.ipynb
     - Changelog: changelog.md
     - Report Issues: https://github.com/ZachDorm/basal_and_bark/issues
     - API Reference:
