@@ -143,14 +143,14 @@ class Map_Folium(folium.Map):
         Returns:
             basal_and_bark map_folium: basal_and_bark map_folium with provided data added to it
         """        
-        try:
-            f = geopandas.read_file(data)
-            geo = folium.GeoJson(data=data, name="TN Counties")
-            m = geo.add_to(self)
-            return m
+        # try:
+        f = geopandas.read_file(data)
+        geo = folium.GeoJson(data=data, name="TN Counties")
+        m = geo.add_to(self)
+        return m
     
-        except:
-            return None
+        # except:
+        #     return None
         
 
     def add_shp_folium(self, data, **kwargs):
@@ -164,12 +164,11 @@ class Map_Folium(folium.Map):
         basal_and_bark map_folium: basal_and_bark map_folium with provided data added to it
     """  
         data=data 
-        try:
-            f = geopandas.read_file(data)
-            geo = f["geometry"].simplify(tolerance=0.001)
-            json = geo.to_json()
-            geo_j = folium.GeoJson(data=json)
-            geo_j.add_to(self)
+        f = geopandas.read_file(data)
+        geo = f["geometry"].simplify(tolerance=0.001)
+        json = geo.to_json()
+        geo_j = folium.GeoJson(data=json)
+        geo_j.add_to(self)
         
         #     for _, r in f.iterrows():
         # # Without simplifying the representation of each borough,
@@ -180,10 +179,8 @@ class Map_Folium(folium.Map):
         #     geo_j.add_to(self)
         # # geo = GeoData(geo_dataframe=f, name="TN Counties")
         # # m = map.add_layer(geo)
-            self
-    
-        except:
-            None
+        self
+
 
 
     def add_vector_folium(self, data, **kwargs):
@@ -201,22 +198,22 @@ class Map_Folium(folium.Map):
             self.add_shp_folium(data)
         except:
             count = count +1
-        try:
-            self.add_geojson_folium(data)
-        except:
-            count = count +1
+            try:
+                self.add_geojson_folium(data)
+            except:
+                count = count +1
         
-        try:
-            json = data.to_json()
-            geo_j = folium.GeoJson(data=json)
-            geo_j.add_to(self)
-        except:
-            count = count +1
+                try:
+                    json = data.to_json()
+                    geo_j = folium.GeoJson(data=json)
+                    geo_j.add_to(self)
+                except:
+                    count = count +1
 
-        if(count==3):
-            return "Not a supported file type"
-        else:
-            pass
+        # if(count==3):
+                    return "Not a supported file type"
+        # else:
+        #     pass
 
 
 

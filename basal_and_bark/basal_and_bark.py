@@ -129,15 +129,15 @@ class Map(ipyleaflet.Map):
     Returns:
         basal_and_bark map: basal_and_bark map with provided data added to it
     """    
-        try:
+        # try:
             #m = Map(center = [40,-100], zoom = 4, test = "test", scroll_wheel_zoom = True)
-            f = geopandas.read_file(data)
-            geo = GeoData(geo_dataframe=f, name="TN Counties")
-            self.add_layer(geo)
-            return self
+        f = geopandas.read_file(data)
+        geo = GeoData(geo_dataframe=f, name="TN Counties")
+        self.add_layer(geo)
+        return self
     
-        except:
-            return None
+        # except:
+        #     return None
         
 
     def add_geojson(self, data, **kwargs):
@@ -161,36 +161,28 @@ class Map(ipyleaflet.Map):
         Returns:
             basal_and_bark map: basal_and_bark map with the vector data added.
         """     
-        count = 0
 
         try:
             self.add_shp(data)
         except:
-            count = count +1
-        try:
-            geo = GeoData(geo_dataframe=data, name="New Data")
-            self.add_layer(geo)
-        except:
-            count = count +1
 
-        try:
-            geo = GeoSeries(data=data, name="New Data")
-            self.add_layer(geo)
-        except:
-            count = count +1
+            try:
+                geo = GeoData(geo_dataframe=data, name="New Data")
+                self.add_layer(geo)
+            except:
+
+                try:
+                    geo = GeoSeries(data=data, name="New Data")
+                    self.add_layer(geo)
+                except:
         
-        try:
-            geo = GeoDataFrame(data=data, name="New Data")
-            self.add_layer(geo)
-        except:
-            count = count +1
+                    try:
+                        geo = GeoDataFrame(data=data, name="New Data")
+                        self.add_layer(geo)
+                    except:
 
-        if(count==3):
-            return "Not a supported file type"
-        else:
-            pass
-            #raise ValueError(f"Not found.")
-        #return self
+                        return "Not a supported file type"
+                    
 
     def add_basemap(self, url = xyz.Esri.WorldImagery.build_url(), basemap="Esri.WorldImagery", **kwargs):
         """Add a basemap from xyz.services
