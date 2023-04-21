@@ -54,3 +54,4 @@ nav:
     - Report Issues: https://github.com/ZachDorm/basal_and_bark/issues
     - API Reference:
           - basal_and_bark module: basal_and_bark.md
+          - basal_and_bark_folium module: basal_and_bark_folium.md
