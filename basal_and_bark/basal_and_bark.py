@@ -7,6 +7,8 @@ from ipyleaflet import GeoData, LayersControl, GeoJSON
 # import folium
 # from folium import TileLayer
 import xyzservices.providers as xyz
+import ipywidgets as widgets
+from ipyleaflet import WidgetControl
 
 import geopandas
 from geopandas import GeoDataFrame, GeoSeries
@@ -250,8 +252,8 @@ class Map(ipyleaflet.Map):
         Args:
             url (String): The url where the image to add is located.
         """        
-        import ipywidgets as widgets
-        from ipyleaflet import WidgetControl
+        # import ipywidgets as widgets
+        # from ipyleaflet import WidgetControl
 
         output_widget = widgets.Output(layout={'border': '1px solid black'})
         output_widget.clear_output()
@@ -262,6 +264,69 @@ class Map(ipyleaflet.Map):
             )
         with output_widget:
             display(logo)
+
+    def add_interactive_basemap(self, **kwargs):
+        """Add a dropdown ipywidget that provides options for a basemap from xyz.services
+
+        Args:
+            self: basal_and_bark map: Map the user wants to add the interactive basemap to.
+
+        Returns:
+            basal_and_bark map: basal_and_bark map with new basemap, function is observing for change in value
+        """        
+        output_widget = widgets.Output(layout={'border': '1px solid black'})
+        output_widget.clear_output()
+        basemap_ctrl = WidgetControl(widget=output_widget, position='bottomright')
+        self.add_control(basemap_ctrl)
+
+        dropdown = widgets.Dropdown(
+            options = ["Topo", "ShadeRelief", "Gray"], 
+            value=None,
+            description='Basemap',
+            )
+
+        close_button = widgets.ToggleButton(
+            value=True,
+            tooltip="Open or close basemap selector",
+            icon="desktop",
+            button_style="primary",
+            #layout=widgets.Layout(height="28px", width="28px", padding=padding),
+        )
+        close_button
+
+        h = widgets.VBox([close_button, dropdown])
+
+
+        with output_widget:
+            # if basemap_ctrl not in leaflet_map.controls:
+            display(h)
+
+        def change_basemap(change):
+            if change["new"] == "Topo":
+                self.add_basemap(basemap= "Esri.WorldTopoMap")
+            if change["new"] == "ShadeRelief":
+                self.add_basemap(basemap= "Esri.WorldShadedRelief")
+            if change["new"] == "Gray":
+                self.add_basemap(basemap= "Esri.WorldGrayCanvas")
+        
+        dropdown.observe(change_basemap, "value")
+
+        def close_basemap(change):
+    
+            if change["new"] == True:
+                output_widget.clear_output()
+                with output_widget:
+            # if basemap_ctrl not in leaflet_map.controls:
+                    display(h)
+            else:
+                output_widget.clear_output()
+                with output_widget:
+            # if basemap_ctrl not in leaflet_map.controls:
+                    display(close_button)
+        
+        close_button.observe(close_basemap, "value")
+
+
 
 
 
