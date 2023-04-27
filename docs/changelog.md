@@ -2,6 +2,16 @@
 
 
 
+## v0.0.5 - April 27, 2023
+
+**Improvement**:
+
+-   Added a function that, when called, adds a dropdown widget that provides options for a user to select a basemap.
+
+**New Features**:
+
+-   add_interactive_basemap()
+
 ## v0.0.4 - April 20, 2023
 
 **Improvement**:
