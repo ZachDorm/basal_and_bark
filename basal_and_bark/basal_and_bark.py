@@ -263,7 +263,7 @@ class Map(ipyleaflet.Map):
             value='<img src="https://wvstateparks.com/wp-content/uploads/2017/03/Ascend-WV-Brand-Photo-Coopers-Rock-State-Forest-Morgantown-scaled.jpg" width="200" height="200">'
             )
         with output_widget:
-            display(logo)
+            output_widget.display(logo)
 
     def add_interactive_basemap(self, **kwargs):
         """Add a dropdown ipywidget that provides options for a basemap from xyz.services
@@ -299,7 +299,7 @@ class Map(ipyleaflet.Map):
 
         with output_widget:
             # if basemap_ctrl not in leaflet_map.controls:
-            display(h)
+            output_widget.display(h)
 
         def change_basemap(change):
             if change["new"] == "Topo":
@@ -317,12 +317,12 @@ class Map(ipyleaflet.Map):
                 output_widget.clear_output()
                 with output_widget:
             # if basemap_ctrl not in leaflet_map.controls:
-                    display(h)
+                    output_widget.display(h)
             else:
                 output_widget.clear_output()
                 with output_widget:
             # if basemap_ctrl not in leaflet_map.controls:
-                    display(close_button)
+                    output_widget.display(close_button)
         
         close_button.observe(close_basemap, "value")
 
