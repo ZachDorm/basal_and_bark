@@ -9,9 +9,11 @@ from ipyleaflet import GeoData, LayersControl, GeoJSON
 import xyzservices.providers as xyz
 import ipywidgets as widgets
 from ipyleaflet import WidgetControl
-
+import pandas
 import geopandas
 from geopandas import GeoDataFrame, GeoSeries
+import requests
+
 
 def generate_random_string(length):
     """Generates a random string
@@ -326,6 +328,129 @@ class Map(ipyleaflet.Map):
         
         close_button.observe(close_basemap, "value")
 
+
+
+    def makeStateDict():
+        states = {"AL": "01",
+        "AR": "05",
+        "FL": "12",
+        "GA": "13",
+        "KY": "21",
+        "LA": "22",
+        "MS": "28",
+        "NC": "37",
+        "OK": "40",
+        "SC": "45",
+        "TN": "47",
+        "TX": "48",
+        "VA": "51"
+        }
+
+    def createWidgetA4API(self):
+        output_widget = widgets.Output(layout={'border': '1px solid black'})
+        output_widget.clear_output()
+        basemap_ctrl = WidgetControl(widget=output_widget, position='bottomright')
+        self.add_control(basemap_ctrl)
+
+        dropdown = widgets.Dropdown(
+            options = ["2020", "2021", "2022"], 
+            value="2020",
+            description='Year',
+            )
+
+        with output_widget:
+            display(dropdown)
+
+        return output_widget
+    
+    def createWidgets4API(self):
+        output_widget = widgets.Output(layout={'border': '1px solid black'})
+        output_widget.clear_output()
+        basemap_ctrl = WidgetControl(widget=output_widget, position='bottomright')
+        self.add_control(basemap_ctrl)
+
+        dropdown = widgets.Dropdown(
+            options = ["2020", "2021", "2022"], 
+            value="2020",
+            description='Year',
+            )
+
+        with output_widget:
+            display(dropdown)
+
+        return output_widget
+
+
+    def makePointsFromClick(self, coords):
+        latlon = coords
+        ##Make points from click
+        lat = coords[0]
+        lon = coords[1]
+
+        df = pandas.DataFrame({'longitude': [lon], 'latitude': [lat]})
+
+        geometry = geopandas.points_from_xy(df.longitude, df.latitude, crs="EPSG:4326")
+
+        gdf = geopandas.GeoDataFrame(df, geometry=geopandas.points_from_xy(df.longitude, df.latitude), crs="EPSG:4326")
+        geo_data = GeoData(geo_dataframe = gdf,
+            style={'color': 'black', 'radius':8, 'fillColor': '#3366cc', 'opacity':0.5, 'weight':1.9, 'dashArray':'2', 'fillOpacity':0.6},
+            hover_style={'fillColor': 'red' , 'fillOpacity': 0.2},
+            point_style={'radius': 5, 'color': 'red', 'fillOpacity': 0.8, 'fillColor': 'blue', 'weight': 3}, name="test")
+        
+        self.add_layer(geo_data)
+
+        return gdf
+
+    def addRefData(self):
+        tn_counties = geopandas.read_file("https://github.com/ZachDorm/basal_and_bark/raw/main/docs/examples/data/tl_2022_us_state.zip")
+        tn_counties_gd = geopandas.GeoDataFrame(tn_counties)#, crs="EPSG:4326")
+
+        tn_counties = tn_counties.set_crs("EPSG:4326", allow_override=True)
+        tn_counties_gd = tn_counties_gd.set_crs("EPSG:4326", allow_override=True)
+        return tn_counties_gd
+
+    def statesDict(self):
+        states = {"AL": "01",
+            "AR": "05",
+            "FL": "12",
+            "GA": "13",
+            "KY": "21",
+            "LA": "22",
+            "MS": "28",
+            "NC": "37",
+            "OK": "40",
+            "SC": "45",
+            "TN": "47",
+            "TX": "48",
+            "VA": "51"
+            }
+        return states
+    
+    def getAPIdata(self, state, year):
+        states = self.statesDict()
+        state_name=state
+        url = f"https://apps.fs.usda.gov/fiadb-api/fullreport?rselected=Land%20Use%20-%20Major&cselected=Land%20use&snum=79&wc={states[str(state)]}{year}&outputFormat=NJSON"    
+
+
+        resp = requests.get(url)
+        data = resp.json()
+ # create output dictionary and populate it with estimate data frames
+        outDict = {}
+    # append estimates
+        outDict['estimates'] = pandas.DataFrame(data['estimates'])
+
+    # append subtotals and totals if present
+        if 'subtotals' in data.keys():
+            subT = {}
+            for i in data['subtotals'].keys():
+                subT[i] = pandas.DataFrame(data['subtotals'][i])
+        
+            outDict['subtotals'] = subT
+            outDict['totals'] = pandas.DataFrame(data['totals'])
+
+    # append metadata
+        outDict['metadata'] = data['metadata']
+        return outDict["estimates"]
 
 
 
