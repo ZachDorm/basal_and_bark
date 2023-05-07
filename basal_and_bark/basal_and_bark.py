@@ -3,7 +3,7 @@
 import string
 import random
 import ipyleaflet
-from ipyleaflet import GeoData, LayersControl, GeoJSON
+from ipyleaflet import GeoData, LayersControl, GeoJSON, TileLayer
 # import folium
 # from folium import TileLayer
 import xyzservices.providers as xyz
@@ -13,6 +13,8 @@ import pandas
 import geopandas
 from geopandas import GeoDataFrame, GeoSeries
 import requests
+import geemap
+import ee
 
 
 def generate_random_string(length):
@@ -346,42 +348,50 @@ class Map(ipyleaflet.Map):
         "VA": "51"
         }
 
-    def createWidgetA4API(self):
-        output_widget = widgets.Output(layout={'border': '1px solid black'})
-        output_widget.clear_output()
-        basemap_ctrl = WidgetControl(widget=output_widget, position='bottomright')
-        self.add_control(basemap_ctrl)
+    # def createWidgetA4API(self):
+    #     output_widget = widgets.Output(layout={'border': '1px solid black'})
+    #     output_widget.clear_output()
+    #     basemap_ctrl = WidgetControl(widget=output_widget, position='bottomright')
+    #     self.add_control(basemap_ctrl)
 
-        dropdown = widgets.Dropdown(
-            options = ["2020", "2021", "2022"], 
-            value="2020",
-            description='Year',
-            )
+    #     dropdown = widgets.Dropdown(
+    #         options = ["2020", "2021", "2022"], 
+    #         value="2020",
+    #         description='Year',
+    #         )
 
-        with output_widget:
-            display(dropdown)
+    #     with output_widget:
+    #         display(dropdown)
 
-        return output_widget
+    #     return output_widget
     
-    def createWidgets4API(self):
-        output_widget = widgets.Output(layout={'border': '1px solid black'})
-        output_widget.clear_output()
-        basemap_ctrl = WidgetControl(widget=output_widget, position='bottomright')
-        self.add_control(basemap_ctrl)
+    # def createWidgets4API(self):
+    #     output_widget = widgets.Output(layout={'border': '1px solid black'})
+    #     output_widget.clear_output()
+    #     basemap_ctrl = WidgetControl(widget=output_widget, position='bottomright')
+    #     self.add_control(basemap_ctrl)
 
-        dropdown = widgets.Dropdown(
-            options = ["2020", "2021", "2022"], 
-            value="2020",
-            description='Year',
-            )
+    #     dropdown = widgets.Dropdown(
+    #         options = ["2020", "2021", "2022"], 
+    #         value="2020",
+    #         description='Year',
+    #         )
 
-        with output_widget:
-            display(dropdown)
+    #     with output_widget:
+    #         display(dropdown)
 
-        return output_widget
+    #     return output_widget
 
 
     def makePointsFromClick(self, coords):
+        """Creates points on the basal_and_bark map at the coords passed in as a parameter.
+
+        Args:
+            coords (coords): Location of user's click on map.
+
+        Returns:
+            GeoDataFrame: This is a GeoDataFrame of the point that is placed on the map.
+        """        
         latlon = coords
         ##Make points from click
         lat = coords[0]
@@ -402,6 +412,11 @@ class Map(ipyleaflet.Map):
         return gdf
 
     def addRefData(self):
+        """Adds the reference data of the states to the basal_and_bark map. This is the shp file that is used to determine which state the user clicks into.
+
+        Returns:
+            GeoDataFrame: This is the format of the states shp file that can be used for contains analysis.
+        """        
         tn_counties = geopandas.read_file("https://github.com/ZachDorm/basal_and_bark/raw/main/docs/examples/data/tl_2022_us_state.zip")
         tn_counties_gd = geopandas.GeoDataFrame(tn_counties)#, crs="EPSG:4326")
 
@@ -410,6 +425,11 @@ class Map(ipyleaflet.Map):
         return tn_counties_gd
 
     def statesDict(self):
+        """Creates a dictionary of all the states in the USFS Southern Research Station. Keys are state abbreviations, and values are numerical USFS state codes.
+
+        Returns:
+            dictionary: state abbreviations and corresponding numerical USFS state codes
+        """        
         states = {"AL": "01",
             "AR": "05",
             "FL": "12",
@@ -427,6 +447,12 @@ class Map(ipyleaflet.Map):
         return states
     
     def getAPIdata(self, state, year):
+        """This function accepts two parameters, a state abbreviation, and a year. These parameters are used for a GET request to the FIA API.
+
+        Args:
+            state (string): State of inventory
+            year (string): Year of inventory
+        """        
         states = self.statesDict()
         state_name=state
         url = f"https://apps.fs.usda.gov/fiadb-api/fullreport?rselected=Land%20Use%20-%20Major&cselected=Land%20use&snum=79&wc={states[str(state)]}{year}&outputFormat=NJSON"    
@@ -450,10 +476,128 @@ class Map(ipyleaflet.Map):
 
     # append metadata
         outDict['metadata'] = data['metadata']
-        return outDict["estimates"]
+        est = outDict["estimates"]
+        df = pandas.DataFrame(pandas.DataFrame(est['ESTIMATE']))
+        #df.index = ['Area estimate for land and water based on all sampled plots (hazardous and denied access plots are not included in the estimate)']
+        #df.index = ['Timberland', 'Reserved', 'Other Forestland', 'Nonforest', 'Non-Census Water', 'Census Water', 'Other']
+        return df
+    
 
 
 
+
+    def ee_tile_layer(self, ee_object, vis_params={}, name="Layer untitled", shown=True, opacity=1.0):
+        """Converts and Earth Engine layer to ipyleaflet TileLayer.
+        Args:
+        ee_object (Collection|Feature|Image|MapId): The object to add to the map.
+        vis_params (dict, optional): The visualization parameters. Defaults to {}.
+        name (str, optional): The name of the layer. Defaults to 'Layer untitled'.
+        shown (bool, optional): A flag indicating whether the layer should be on by default. Defaults to True.
+        opacity (float, optional): The layer's opacity represented as a number between 0 and 1. Defaults to 1.
+        """
+
+        image = None
+
+        if (
+            not isinstance(ee_object, ee.Image)
+            and not isinstance(ee_object, ee.ImageCollection)
+            and not isinstance(ee_object, ee.FeatureCollection)
+            and not isinstance(ee_object, ee.Feature)
+            and not isinstance(ee_object, ee.Geometry)
+        ):
+            err_str = "\n\nThe image argument in 'addLayer' function must be an instace of one of ee.Image, ee.Geometry, ee.Feature or ee.FeatureCollection."
+            raise AttributeError(err_str)
+
+        if (
+            isinstance(ee_object, ee.geometry.Geometry)
+            or isinstance(ee_object, ee.feature.Feature)
+            or isinstance(ee_object, ee.featurecollection.FeatureCollection)
+        ):
+            features = ee.FeatureCollection(ee_object)
+
+            width = 2
+
+            if "width" in vis_params:
+                width = vis_params["width"]
+
+            color = "000000"
+
+            if "color" in vis_params:
+                color = vis_params["color"]
+
+            image_fill = features.style(**{"fillColor": color}).updateMask(
+                ee.Image.constant(0.5)
+            )
+            image_outline = features.style(
+                **{"color": color, "fillColor": "00000000", "width": width}
+            )
+
+            image = image_fill.blend(image_outline)
+        elif isinstance(ee_object, ee.image.Image):
+            image = ee_object
+        elif isinstance(ee_object, ee.imagecollection.ImageCollection):
+            image = ee_object.mosaic()
+
+        map_id_dict = ee.Image(image).getMapId(vis_params)
+        tile_layer = TileLayer(url=map_id_dict["tile_fetcher"].url_format,attribution="Google Earth Engine", name=name,opacity=opacity,
+        visible=shown,)
+        return tile_layer
+
+
+    def addGEEData(self, state):
+        """Adds Google Earth Engine's Hansen et al Forest Change data set to the basal_and_bark map. The data set 
+           is clipped to the state that is passed as the parameter.
+
+        Args:
+            state (string): Abbreviation of state as specified in the "STUSPS" attribute field
+
+        Returns:
+            DataFrame: Summary statistics of the cropped data that has been added to the basal_and_bark map.
+        """        
+        ee.Initialize()
+        # data = ee.Image('')
+        states = ee.FeatureCollection("TIGER/2018/States")
+        st = states.filter(ee.Filter.eq('STUSPS', state))
+        dem = ee.Image('UMD/hansen/global_forest_change_2018_v1_6')#ee.ImageCollection('USGS/NLCD_RELEASES/2016_REL').mosaic()
+
+        vis_params = {
+            'min': 0,
+            'max': 4000,
+            'palette': ['006633', 'E5FFCC', '662A00', 'D8D8D8', 'F5F5F5']}
+
+        dem_f = dem.clip(st)
+
+        tile = self.ee_tile_layer(dem_f.select('treecover2000'), vis_params)
+        self.add_layer(tile)
+
+        stats = geemap.image_stats(dem_f.select('treecover2000'), region =st, scale=30)
+
+        df = stats.getInfo()
+
+        lst = list(list(df.values()))#.values())
+
+        df = pandas.DataFrame(lst)
+        df.index = ['max', 'mean', 'min', 'std', 'sum']
+        df.columns = ['GEEMap Data']
+        return df
+    
+    def findInt(self, tn_counties_gd, gdf):
+        """Find the interesection between the first geometry (must have attribute "USPS") and the second.
+
+        Args:
+            tn_counties_gd (GeoDataFrame): geometry 1
+            gdf (GeoDataFrame): geometry 2
+
+        Returns:
+            The name of the intersection from field "STUSPS"
+        """        
+        for i in range(1,len(tn_counties_gd['geometry']),1):
+            test = tn_counties_gd['geometry'][i].contains(gdf['geometry'])
+
+            county = 'name'
+
+            if test[0]:
+                return tn_counties_gd['STUSPS'][i]
 
 
 
