@@ -1,5 +1,10 @@
 # Changelog
 
+## v0.0.7 - May 6, 2023
+
+**Improvement**:
+
+-   Improving documentation.
 
 ## v0.0.6 - May 6, 2023
 
