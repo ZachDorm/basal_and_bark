@@ -1,6 +1,11 @@
 # Changelog
 
 
+## v0.0.6 - May 6, 2023
+
+**Improvement**:
+
+-   Both FIADB-API and GEE functionalities were added along with new interactive widgets to explore forestry datasets.
 
 ## v0.0.5 - April 27, 2023
 
