@@ -332,21 +332,21 @@ class Map(ipyleaflet.Map):
 
 
 
-    def makeStateDict():
-        states = {"AL": "01",
-        "AR": "05",
-        "FL": "12",
-        "GA": "13",
-        "KY": "21",
-        "LA": "22",
-        "MS": "28",
-        "NC": "37",
-        "OK": "40",
-        "SC": "45",
-        "TN": "47",
-        "TX": "48",
-        "VA": "51"
-        }
+    # def makeStateDict():
+    #     states = {"AL": "01",
+    #     "AR": "05",
+    #     "FL": "12",
+    #     "GA": "13",
+    #     "KY": "21",
+    #     "LA": "22",
+    #     "MS": "28",
+    #     "NC": "37",
+    #     "OK": "40",
+    #     "SC": "45",
+    #     "TN": "47",
+    #     "TX": "48",
+    #     "VA": "51"
+    #     }
 
     # def createWidgetA4API(self):
     #     output_widget = widgets.Output(layout={'border': '1px solid black'})
@@ -581,7 +581,7 @@ class Map(ipyleaflet.Map):
         df.columns = ['GEEMap Data']
         return df
     
-    def findInt(self, tn_counties_gd, gdf):
+    def findInt(self, states, gdf):
         """Find the interesection between the first geometry (must have attribute "USPS") and the second.
 
         Args:
@@ -591,13 +591,13 @@ class Map(ipyleaflet.Map):
         Returns:
             The name of the intersection from field "STUSPS"
         """        
-        for i in range(1,len(tn_counties_gd['geometry']),1):
-            test = tn_counties_gd['geometry'][i].contains(gdf['geometry'])
+        for i in range(1,len(states['geometry']),1):
+            test = states['geometry'][i].contains(gdf['geometry'])
 
             county = 'name'
 
             if test[0]:
-                return tn_counties_gd['STUSPS'][i]
+                return states['STUSPS'][i]
 
 
 
