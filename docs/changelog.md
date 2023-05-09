@@ -1,5 +1,10 @@
 # Changelog
 
+## v0.0.8 - May 9, 2023
+
+**Improvement**:
+
+-   Handled error if user selects outside of states when trying to retrieve API data.
 ## v0.0.7 - May 6, 2023
 
 **Improvement**:
