@@ -455,8 +455,11 @@ class Map(ipyleaflet.Map):
         """        
         states = self.statesDict()
         state_name=state
-        url = f"https://apps.fs.usda.gov/fiadb-api/fullreport?rselected=Land%20Use%20-%20Major&cselected=Land%20use&snum=79&wc={states[str(state)]}{year}&outputFormat=NJSON"    
 
+        if state in states:
+            url = f"https://apps.fs.usda.gov/fiadb-api/fullreport?rselected=Land%20Use%20-%20Major&cselected=Land%20use&snum=79&wc={states[str(state)]}{year}&outputFormat=NJSON"    
+        else:
+            return "This is not a state in the USFS Southern Research Station."
 
         resp = requests.get(url)
         data = resp.json()
