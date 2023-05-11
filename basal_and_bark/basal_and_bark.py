@@ -3,7 +3,7 @@
 import string
 import random
 import ipyleaflet
-from ipyleaflet import GeoData, LayersControl, GeoJSON, TileLayer
+from ipyleaflet import GeoData, LayersControl, GeoJSON, TileLayer, Marker
 # import folium
 # from folium import TileLayer
 import xyzservices.providers as xyz
@@ -603,6 +603,30 @@ class Map(ipyleaflet.Map):
                 return states['STUSPS'][i]
 
 
+
+
+##FINAL EXAM ADDITIONS
+
+    def csv_to_shp(in_csv, out_shp='cities.shp', x="longitude", y="latitude"):
+        csv = pandas.read_csv(in_csv)
+        gdf = geopandas.GeoDataFrame(csv, geometry=geopandas.points_from_xy(csv[x], csv[y]), crs="EPSG:4326")
+        return gdf.to_file(out_shp)
+    
+    def csv_to_geojson(in_csv, out_geojson='cities.geojson', x="longitude", y="latitude"):
+        csv = pandas.read_csv(in_csv)
+        gdf = geopandas.GeoDataFrame(csv, geometry=geopandas.points_from_xy(csv[x], csv[y]), crs="EPSG:4326")
+        return gdf.to_file(out_geojson, driver='GeoJSON')
+    
+    def add_points_from_csv(self, in_csv, x="longitude", y="latitude", label=None, layer_name="Marker cluster"):
+        coords = in_csv[[x, y]]
+        marker_list = [Marker(location=(0,0))]*len(coords)
+        
+        for i in range(0,len(coords)):
+            marker_list[i] = Marker(location=list(coords.iloc[i]))
+
+        self.add_layer(marker_list, layer_name)
+
+    
 
 
     

@@ -52,6 +52,7 @@ nav:
             - examples/rasters.ipynb
             - examples/change_basemap.ipynb
             - examples/fia_db.ipynb
+            - examples/Final.ipynb
     - Changelog: changelog.md
     - Report Issues: https://github.com/ZachDorm/basal_and_bark/issues
     - API Reference:
