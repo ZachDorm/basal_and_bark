@@ -607,18 +607,18 @@ class Map(ipyleaflet.Map):
 
 ##FINAL EXAM ADDITIONS
 
-    def csv_to_shp(in_csv, out_shp='cities.shp', x="longitude", y="latitude"):
+    def csv_to_shp(self, in_csv, out_shp='cities.shp', x="longitude", y="latitude"):
         csv = pandas.read_csv(in_csv)
         gdf = geopandas.GeoDataFrame(csv, geometry=geopandas.points_from_xy(csv[x], csv[y]), crs="EPSG:4326")
         return gdf.to_file(out_shp)
     
-    def csv_to_geojson(in_csv, out_geojson='cities.geojson', x="longitude", y="latitude"):
+    def csv_to_geojson(self, in_csv, out_geojson='cities.geojson', x="longitude", y="latitude"):
         csv = pandas.read_csv(in_csv)
         gdf = geopandas.GeoDataFrame(csv, geometry=geopandas.points_from_xy(csv[x], csv[y]), crs="EPSG:4326")
         return gdf.to_file(out_geojson, driver='GeoJSON')
     
     def add_points_from_csv(self, in_csv, x="longitude", y="latitude", label=None, layer_name="Marker cluster"):
-        coords = in_csv[[x, y]]
+        coords = in_csv[['longitude', 'latitude']]
         marker_list = [Marker(location=(0,0))]*len(coords)
         
         for i in range(0,len(coords)):
