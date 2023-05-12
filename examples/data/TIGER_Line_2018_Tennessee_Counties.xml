@@ -1,0 +1,121 @@
+<?xml version="1.0" encoding="UTF-8"?><MD_Metadata xmlns:gts="http://www.isotc211.org/2005/gts" xmlns:gco="http://www.isotc211.org/2005/gco" xmlns:xalan="http://xml.apache.org/xalan" xmlns:srv="http://www.isotc211.org/2005/srv" xmlns:gmx="http://www.isotc211.org/2005/gmx" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:gml="http://www.opengis.net/gml" xmlns="http://www.isotc211.org/2005/gmd">
+    <characterSet>
+        <MD_CharacterSetCode codeList="http://www.isotc211.org/2005/resources/Codelist/gmxCodelists.xml#MD_CharacterSetCode" codeListValue="utf8" codeSpace="ISOTC211/19115">utf8</MD_CharacterSetCode>
+    </characterSet>
+    <hierarchyLevel>
+        <MD_ScopeCode codeList="http://www.isotc211.org/2005/resources/Codelist/gmxCodelists.xml#MD_ScopeCode" codeListValue="dataset" codeSpace="ISOTC211/19115">dataset</MD_ScopeCode>
+    </hierarchyLevel>
+    <hierarchyLevelName>
+        <gco:CharacterString>dataset</gco:CharacterString>
+    </hierarchyLevelName>
+    <contact gco:nilReason="missing"/>
+    <dateStamp gco:nilReason="missing"/>
+    <metadataStandardName>
+        <gco:CharacterString>ISO 19139 Geographic Information - Metadata - Implementation Specification</gco:CharacterString>
+    </metadataStandardName>
+    <metadataStandardVersion>
+        <gco:CharacterString>2007</gco:CharacterString>
+    </metadataStandardVersion>
+    <identificationInfo>
+        <MD_DataIdentification>
+            <citation>
+                <CI_Citation>
+                    <title>
+                        <gco:CharacterString>Map</gco:CharacterString>
+                    </title>
+                    <date gco:nilReason="missing"/>
+                </CI_Citation>
+            </citation>
+            <abstract>
+                <gco:CharacterString>Each county or statistically equivalent entity is assigned a 3-character FIPS code that is unique within a state, as well as an 8-character National Standard (GNIS) code.The 2018 TIGER/Line Shapefiles reflect available governmental unit boundaries of the counties and equivalent entities as of January 1, 2018.Core-based Statistical Area (CBSA) Codes – The 2018 county and equivalent entity shapefiles also contain fields with codes for combined statistical area, metropolitan or micropolitan statistical area, and metropolitan division. Counties form the building blocks for CBSAs, and a user can merge county records to form these areas without having to acquire the individual CBSA shapefiles.</gco:CharacterString>
+            </abstract>
+            <purpose>
+                <gco:CharacterString>Counties and equivalent entities are primary legal divisions of states. Each county or statistically equivalent entity is assigned a 3-character FIPS code that is unique within a state, as well as an 8-character National Standard (GNIS) code.</gco:CharacterString>
+            </purpose>
+            <credit>
+                <gco:CharacterString>2018 TIGER/Line Shapefiles. US Census Bureau, Tennessee State Data Center</gco:CharacterString>
+            </credit>
+            <descriptiveKeywords>
+                <MD_Keywords>
+                    <keyword>
+                        <gco:CharacterString>Census</gco:CharacterString>
+                    </keyword>
+                    <keyword>
+                        <gco:CharacterString>TIGER</gco:CharacterString>
+                    </keyword>
+                    <keyword>
+                        <gco:CharacterString>county</gco:CharacterString>
+                    </keyword>
+                    <keyword>
+                        <gco:CharacterString>Tennessee</gco:CharacterString>
+                    </keyword>
+                </MD_Keywords>
+            </descriptiveKeywords>
+            <descriptiveKeywords>
+                <MD_Keywords>
+                    <keyword>
+                        <gco:CharacterString>Census</gco:CharacterString>
+                    </keyword>
+                    <keyword>
+                        <gco:CharacterString>TIGER</gco:CharacterString>
+                    </keyword>
+                    <keyword>
+                        <gco:CharacterString>county</gco:CharacterString>
+                    </keyword>
+                    <keyword>
+                        <gco:CharacterString>Tennessee</gco:CharacterString>
+                    </keyword>
+                </MD_Keywords>
+            </descriptiveKeywords>
+            <descriptiveKeywords>
+                <MD_Keywords>
+                    <keyword>
+                        <gco:CharacterString>Census</gco:CharacterString>
+                    </keyword>
+                    <keyword>
+                        <gco:CharacterString>TIGER</gco:CharacterString>
+                    </keyword>
+                    <keyword>
+                        <gco:CharacterString>county</gco:CharacterString>
+                    </keyword>
+                    <keyword>
+                        <gco:CharacterString>Tennessee</gco:CharacterString>
+                    </keyword>
+                </MD_Keywords>
+            </descriptiveKeywords>
+            <descriptiveKeywords>
+                <MD_Keywords>
+                    <keyword>
+                        <gco:CharacterString>Census</gco:CharacterString>
+                    </keyword>
+                    <keyword>
+                        <gco:CharacterString>TIGER</gco:CharacterString>
+                    </keyword>
+                    <keyword>
+                        <gco:CharacterString>county</gco:CharacterString>
+                    </keyword>
+                    <keyword>
+                        <gco:CharacterString>Tennessee</gco:CharacterString>
+                    </keyword>
+                </MD_Keywords>
+            </descriptiveKeywords>
+            <resourceConstraints>
+                <MD_Constraints>
+                    <useLimitation>
+                        <gco:CharacterString>
+
+
+
+
+This work (TIGER Line 2018 Counties, by United States Census Bureau), identified by Tennessee State Data Center, is free of known copyright restrictions.
+</gco:CharacterString>
+                    </useLimitation>
+                </MD_Constraints>
+            </resourceConstraints>
+            <language gco:nilReason="missing"/>
+            <characterSet>
+                <MD_CharacterSetCode codeList="http://www.isotc211.org/2005/resources/Codelist/gmxCodelists.xml#MD_CharacterSetCode" codeListValue="utf8" codeSpace="ISOTC211/19115">utf8</MD_CharacterSetCode>
+            </characterSet>
+        </MD_DataIdentification>
+    </identificationInfo>
+</MD_Metadata>
