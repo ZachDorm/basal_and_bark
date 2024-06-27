@@ -1,4 +1,9 @@
 # Changelog
+## v0.0.9 - June 27, 2024
+
+**Improvement**:
+
+ -  Add GEE functionality to folium module
 
 ## v0.0.8 - May 9, 2023
 
