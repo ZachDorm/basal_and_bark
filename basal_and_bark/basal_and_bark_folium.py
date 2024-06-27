@@ -6,6 +6,7 @@ import random
 # from ipyleaflet import GeoData, LayersControl, GeoJSON
 import folium
 from folium import TileLayer
+import folium.raster_layers
 import xyzservices.providers as xyz
 
 import geopandas
@@ -218,6 +219,19 @@ class Map_Folium(folium.Map):
 
 
 
-    
+    def add_ee_layer(self, ee_object, vis_params, name):
+        try:
+            if isinstance(ee_object, ee.image.Image):
+                map_id_dict = ee.Image(ee_object).getMapId(vis_params)
+                folium.raster_layers.TileLayer(
+                    tiles = map_id_dict['tile_fetcher'].url_format,
+                    attr ='Google Earth Engine',
+                    name=name,
+                    overlay=True,
+                    control=True
+                ).add_to(self)
+            
+        except:
+            print("Could not display.")
 
 
