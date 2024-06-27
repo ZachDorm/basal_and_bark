@@ -11,6 +11,7 @@ import xyzservices.providers as xyz
 
 import geopandas
 from geopandas import GeoDataFrame, GeoSeries
+import ee
 
 def generate_random_string(length):
     """Generates a random string
