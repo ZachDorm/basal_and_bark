@@ -224,13 +224,15 @@ class Map_Folium(folium.Map):
         try:
             if isinstance(ee_object, ee.image.Image):
                 map_id_dict = ee.Image(ee_object).getMapId(vis_params)
-                folium.raster_layers.TileLayer(
+                m = folium.raster_layers.TileLayer(
                     tiles = map_id_dict['tile_fetcher'].url_format,
                     attr ='Google Earth Engine',
                     name=name,
                     overlay=True,
                     control=True
                 ).add_to(self)
+
+                return m
             
         except:
             print("Could not display.")
